@@ -1,0 +1,33 @@
+<div>
+
+    <!-- <div class="documentEntry" [style.background-size]="'100%;'" [style.background-repeat]="'no-repeat'"> -->
+        <div class="documentEntry" [style.background-image]="_titleImageUrl" [style.background-width]="'100%;'" [style.background-repeat]="'no-repeat'">
+        <!-- <div class="documentEntry" [style.background-image]="'url('+_titleImageUrl+')'" [style.background-size]="'100%;'" [style.background-repeat]="'no-repeat'"> -->
+        
+            <div class="documentEntryDetails">
+            <span><h3>{{inputEditorsDocument?.title}}</h3></span>
+            <span>{{inputEditorsDocument?.subtitle}}</span>
+            <div>Authors: AUthor1 AUthor2 Author3</div>
+            <button class="button" type="button" (click)="switchEditor()" >
+                Edit
+            </button>
+        </div>
+        <!--img [src]="_titleImageUrl" class="image"-->
+
+        <button class="button" type="button" (click)="load()" *ngIf="!markdown">
+            Read
+        </button>
+
+        <button class="button" type="button" (click)="clear()" *ngIf="markdown">
+            Minimize
+        </button>
+
+        <markdown *ngIf="markdown" [data]="markdown" ngPreserveWhitespaces class="documentCard"></markdown>
+        <button class="button" type="button" (click)="clear()" *ngIf="markdown">
+            Minimize
+        </button>
+    </div>
+
+
+
+</div>

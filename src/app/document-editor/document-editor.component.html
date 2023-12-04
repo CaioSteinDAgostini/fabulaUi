@@ -1,0 +1,31 @@
+<div *ngIf="article" class="documentEditorCard">
+
+    <div class="thumbnailSelector" (click)="switchGallery()">
+
+        <!-- <p *ngIf="!_thumbnailImageUrl">select title image</p> -->
+        <p *ngIf="!article.thumbnailImageUrl" class="imageFrame">select title image</p>
+        <img *ngIf="article.thumbnailImageUrl" [src]="article.thumbnailImageUrl" class="image">
+        <!-- <img *ngIf="_thumbnailImageUrl" [src]="_thumbnailImageUrl" class="image"> -->
+
+
+        <button class="button" type="button" (click)="switchGallery()">
+            Select from Gallery
+        </button>
+    </div>
+
+    <app-gallery *ngIf="isGalleryOpen" [selectedAccountToken]="inputSelectedAccountToken"  [selectOnlyOne]="true" (isOpenEmitter)="setIsGalleryOpen($event)">
+
+    </app-gallery>
+
+    <textarea value={{article.contents}}  (input)="setEditedContent($event)" rows="50">    </textarea>
+    <button class="button" type="submit" (click)="save()">
+        save
+    </button>
+    <button class="button" type="submit" (click)="cancel()">
+        cancel
+    </button>
+
+
+
+
+</div>

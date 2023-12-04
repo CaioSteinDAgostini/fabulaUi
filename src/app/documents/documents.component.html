@@ -1,0 +1,19 @@
+
+<div>
+    <app-document-editor *ngIf="isEditorOpen" [article]="selectedArticle" 
+    [inputSelectedAccountToken]="selectedAccountToken"  (outputCloseEditor)="closeEditor($event)">
+</app-document-editor>
+
+    <div *ngIf="!isEditorOpen">
+        <p>Documents from the select domain</p>
+        <div *ngFor="let article of domainArticles">
+            <app-document-entry [inputEditorsDocument]="article" [inputSelectAccountToken]="selectedAccountToken"
+                (outputDocumentEditorForDocument)="setArticleBeingEdited($event)">
+
+            </app-document-entry>
+
+        </div>
+    </div>
+
+
+</div>

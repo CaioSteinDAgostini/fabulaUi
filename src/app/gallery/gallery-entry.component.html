@@ -1,0 +1,8 @@
+<div *ngIf="inputThumbnail" class="thumbnailCard" (click)="switchSelection()">
+    <img [src]="thumbnailImageUrl" class="image">
+    <div class="thumbnailDetails">
+        <p>Name: {{inputThumbnail.image}}</p>
+        <p>Id: <a [href]="thumbnailImageUrl">{{inputThumbnail.id}}</a></p>
+        <h2 *ngIf="isSelected" [style.color]="'#558044'">SELECTED</h2>
+    </div>
+</div>

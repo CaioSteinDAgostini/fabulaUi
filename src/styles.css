@@ -1,0 +1,138 @@
+Application-wide Styles
+
+
+
+h1 {
+  color: #D4E0EF;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 250%;
+}
+
+h4 {
+  color: #71A5D7;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: normal;
+  font-size: 130%;
+  margin: 0.1em;
+  margin-top: 1em;
+  margin-bottom: 0.7em;
+  line-height: 0.5em;
+}
+
+h5 {
+  color: #A1C4E8;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: lighter;
+  font-size: 100%;
+  margin: 0.1em;
+  margin-top: 0.5em;
+}
+
+body {
+  background-color: #333;
+  margin: 2em;
+  background-attachment: fixed;
+  /* background-image: url('./assets/fabula.svg'); */
+  background-position: 0;
+  background-size: 33%;
+  background-repeat:no-repeat;
+}
+
+.header {
+  color: whitesmoke;
+  border-radius: 0.3em;
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(5px);
+  outline-style: solid;
+  outline-width: 0.1em;
+  outline-color: black;
+}
+
+
+
+
+
+.domainCard {
+  
+  color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.3em;
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(5px);
+}
+
+.loginCard {
+  width: 33%;
+  color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.3em;
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(5px);
+
+}
+
+.loginCard>label {
+  border-top: 0.93em;
+  border-bottom: 0.93em;
+}
+
+.loginCard input {
+  color: whitesmoke;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+
+}
+
+.documentEntry {
+
+  background-color: black;
+  padding: 5px;
+  margin-top:  1em;
+  outline-style: solid;
+  outline-width: 0.1em;
+  outline-color: black;
+  
+}
+
+.documentEntry > button {
+  width: 100%;
+
+}
+
+
+.documentEntryDetails {
+  /* width: 100%; */
+  color: whitesmoke;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(5px);
+  padding-left: 1em;
+  outline-style: solid;
+  outline-width: 0.01em;
+  outline-color: black;
+}
+
+app-documents {
+  display: block;
+  float: none;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  color: whitesmoke;
+  outline-style: solid;
+  outline-width: 0.01em;
+  outline-color: black;
+}
+
+app-documents.documentEntry {
+  max-width: 500em;
+
+}

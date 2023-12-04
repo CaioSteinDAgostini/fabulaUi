@@ -1,0 +1,15 @@
+<app-login (outputUserToken)="setUserToken($event)" (outputSelectedAccount)="setSelectedAccount($event)"
+  (outputAccountToken)="setSelectedAccountToken($event)"></app-login>
+<app-documents *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken" [selectedAccount]="selectedAccount" ></app-documents>
+<app-gallery *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken" >
+</app-gallery>
+
+
+
+<!-- <nav>
+  <ul>
+    <li><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">login</a></li>
+    <li><a routerLink="/documents" routerLinkActive="active" ariaCurrentWhenActive="page">documents</a></li>
+  </ul>
+</nav> -->
+<router-outlet></router-outlet>

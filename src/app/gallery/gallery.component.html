@@ -1,0 +1,22 @@
+
+<div class="gallery">
+<p>Gallery</p>
+<button class="button" type="button" (click)="uploadNewImage()">
+    upload
+</button>
+
+<button class="button" type="button" (click)="deleteSelected()">
+    <span>delete</span>
+</button>
+
+
+<div *ngFor="let thumbnail of imageThumbnails">
+    <app-gallery-entry [inputThumbnail]="thumbnail"  [inputSelectedAccountToken]="selectedAccountToken" (isSelectedEmmiter)="selectImage($event)">
+
+    </app-gallery-entry>
+</div>
+
+<button class="button" type="button" (click)="close()">
+    <span>close gallery</span>
+</button>
+</div>

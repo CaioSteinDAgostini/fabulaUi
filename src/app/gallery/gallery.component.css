@@ -1,0 +1,14 @@
+.gallery {
+    outline-style: solid;
+    outline-width: 0.01em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5em;
+    text-align: left;
+    /*background: inherit;*/
+    background-color: rgba(245, 245, 245, 0.288);
+    backdrop-filter: blur(5px);
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
