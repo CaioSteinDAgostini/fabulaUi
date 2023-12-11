@@ -16,7 +16,6 @@ export class FilesService {
   }
 
   getFileData(fileId : String): Observable<any> {
-    console.log('documents service listDocuments')
     var options = {
       headers: new HttpHeaders({
          'Accept':'image/image/png', //or 'Accept':'application/pdf' .. etc

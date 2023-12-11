@@ -21,8 +21,6 @@ export class LoginComponent {
     this.authService.outputUserToken.subscribe(
       (userToken: Token) => {
         this.authService.getAvailableDomains();
-        console.log("AuthService returned ");
-        
         let availableDomains = authService.getAvailableDomains();
         if (availableDomains) {
           let rootDomain = availableDomains.find((element) => element.root);
@@ -64,10 +62,8 @@ export class LoginComponent {
 
   connectToDomain(domainId: string): void {
     if (this.authService.getUserToken()) {
-      console.log("login component trying to connect to domain "+ domainId);
       this.authService.postAuthorization(domainId);
-
-    }
+   }
     else {
       throw new Error();
     }

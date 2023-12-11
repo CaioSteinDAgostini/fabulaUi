@@ -20,7 +20,6 @@ export class DocumentsService {
 
   
   listDocuments(): Observable<Array<Document>> {
-    console.log('documents service listDocuments')
     const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     return this.http.get<Array<Document>>(this.url,  { headers});
   }
@@ -33,23 +32,13 @@ export class DocumentsService {
 
   saveDocument(document :Document): Observable<Document>{
     const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
-    console.log("document content is "+document.contents);
     return this.http.put<Document>(this.url, document, {headers});
     // return this.http.put<Document>(this.url, document, {headers});
   }
 
   loadDocument(documentId : string): Observable<Document>{
-    console.log("document service this.loadDocument "+documentId);
     const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     return this.http.get<Document>(this.url+"/"+documentId,  { headers});
   }
 
-
-//  decodeTitleImage(document : Document): Observable<String>
-//{
-//    if(document.titleImage){
-//      Buffer.from(document.titleImage.data).toString('base64')
-//    }  
-//    return ""
- // }
 }

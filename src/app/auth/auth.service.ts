@@ -23,7 +23,6 @@ export class AuthService {
   userClaims: Claims | null = null;
   accountClaims: Claims | null = null;
 
-  selectedUser : User | null = null;
   availableDomains  : Domain[] | null= [];
 
   outputSelectedDomain = new EventEmitter<Domain>();
@@ -37,7 +36,6 @@ export class AuthService {
 
   postAuthorization(domainId: string){
 
-    console.log("authService post authorization "+ domainId + "  with usertoken "+ this.getUserToken()?.token);
     const headers = { 'Authorization': 'Bearer '+this.getUserToken()?.token };
     const body = null;// { title: 'Angular POST Request Example' };
     const params = { 'domainId' : domainId};
@@ -60,7 +58,6 @@ export class AuthService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }).subscribe(token => {
       this.userToken = token;
-      console.log("/n/n authservice got token "+token.token);
       this.userClaims = this.decode(this.userToken);
       this.availableDomains = this.userClaims.domains; 
       this.outputUserToken.emit(token);
@@ -101,6 +98,6 @@ export class AuthService {
   }
 
   isUserLogged() : boolean {
-    return this.selectedUser!=null;
+    return this.userToken!=null;
   }
 }

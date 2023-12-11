@@ -23,9 +23,6 @@ export class DocumentsComponent implements OnInit {
   selectedArticle : Document | null = null;
   selectedArticleTitleImageUrl : string | ArrayBuffer | null = null;
 
-  queryPlaceholder : string = "keyword";
-  query: string | null = null;
-
   isEditorOpen : boolean = false;
   
   _selectedAccount : Account | null  = null;
@@ -39,12 +36,10 @@ export class DocumentsComponent implements OnInit {
 
   @Input() 
   set selectedAccount(account : Account | null){
-    console.log("selected account changed >> "+account + "   "+account?.domain.name);
     this.listArticles();
   }
 
   setArticleBeingEdited(article : Document){
-    console.log("Cocuments Component >> selected article for editor "+ article.contents);
     this.selectedArticle = article;
     this.isEditorOpen = true;
   }
@@ -64,7 +59,6 @@ export class DocumentsComponent implements OnInit {
 
   listArticles() {
       this.documentsService.listDocuments().subscribe(articles => {
-        console.log("documents "+JSON.stringify(articles));
         this.domainArticles = articles;
       });
     
@@ -80,7 +74,7 @@ export class DocumentsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.listArticles();
+    /* this.listArticles(); */
   }
 
 }
