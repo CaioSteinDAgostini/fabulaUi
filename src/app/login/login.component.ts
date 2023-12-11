@@ -8,6 +8,7 @@ import { Domain } from 'src/app/domain/domain';
 import { Account } from 'src/app/accounts/account';
 import { AccountService } from 'src/app/accounts/account.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,13 +16,30 @@ import { AccountService } from 'src/app/accounts/account.service';
 })
 export class LoginComponent {
 
-  constructor(private authService: AuthService,  private accountsService: AccountService, private formBuilder: FormBuilder) {
+  constructor(private authService: AuthService, private accountsService: AccountService, private formBuilder: FormBuilder) {
 
+    this.authService.outputUserToken.subscribe(
+      (userToken: Token) => {
+        this._userToken = userToken;
+        this.userClaims = this.authService.getUserClaims();
+        this._availableDomains = this.authService.getAvailableDomains();
+        console.log("AuthService returned ");
+        
+        console.log("available domains = "+this._availableDomains);
+        if (this._availableDomains) {
+          let rootDomain = this._availableDomains.find((element) => element.root);
+          if (rootDomain?.id) {
+            this.connectToDomain(rootDomain.id);
+          }
+        }
+        this.outputUserToken.emit(this._userToken);
+      }
+    );
   }
 
 
   usernamePlaceholder: String | null = "root@domain.com";
-  pwdPlaceholder : String | null = "pwd";
+  pwdPlaceholder: String | null = "pwd";
 
   _userToken: Token | null = null;
   @Output() outputUserToken = new EventEmitter<Token>();
@@ -33,7 +51,7 @@ export class LoginComponent {
   _selectedAccount: Account | null = null;
   @Output() outputSelectedAccount = new EventEmitter<Account>();
 
-  _availableDomains: Domain[] | null= []
+  _availableDomains: Domain[] | null = []
   @Output() outputSelectedDomain = new EventEmitter<Domain>();
 
   submitted = false;
@@ -49,23 +67,32 @@ export class LoginComponent {
     console.log(this.loginForm.controls['username'].value + ":" + this.loginForm.controls['password'].value)
     let username = this.loginForm.controls['username'].value;
     let password = this.loginForm.controls['password'].value;
-    if(username && password){
-    this.authService.postAuthentication(username, password).subscribe(token => {
-      this._userToken = token;
-      this.outputUserToken.emit(token);
-      this.userClaims = this.authService.decode(this._userToken);
-      this._availableDomains = this.userClaims.domains;
-
-      let rootDomain  = this._availableDomains.find((element) => element.root);
-      if(rootDomain?.id){
-        this.connectToDomain(rootDomain.id);
-      }
-    });
-    this.submitted = true;
-  }
+    if (username && password) {
+      this.authService.postAuthentication(username, password);
+    }
   }
 
-  isSame(account : Account, domain : Domain) : boolean {
+  /* onSubmit() {
+    console.log(this.loginForm.controls['username'].value + ":" + this.loginForm.controls['password'].value)
+    let username = this.loginForm.controls['username'].value;
+    let password = this.loginForm.controls['password'].value;
+    if (username && password) {
+      this.authService.postAuthentication(username, password).subscribe(token => {
+        this._userToken = token;
+        this.outputUserToken.emit(token);
+        this.userClaims = this.authService.decode(this._userToken);
+        this._availableDomains = this.userClaims.domains;
+
+        let rootDomain = this._availableDomains.find((element) => element.root);
+        if (rootDomain?.id) {
+          this.connectToDomain(rootDomain.id);
+        }
+      });
+      this.submitted = true;
+    }
+  } */
+
+  isSame(account: Account, domain: Domain): boolean {
     return account.domain.id == domain.id;
   }
 
@@ -81,15 +108,16 @@ export class LoginComponent {
           this.outputSelectedAccount.emit(account);
         });
       });
-      
+
     }
     else {
       throw new Error();
     }
   }
 
-  switchDomains(){
-    this._switchDomains=!this._switchDomains;
+
+  switchDomains() {
+    this._switchDomains = !this._switchDomains;
   }
 
 }
