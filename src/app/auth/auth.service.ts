@@ -7,6 +7,7 @@ import { Buffer } from 'buffer';
 import { Claims } from './claims';
 import { User } from './user';
 import { Domain } from '../domain/domain';
+import { AccountService } from '../accounts/account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,31 +21,40 @@ export class AuthService {
   outputUserToken = new EventEmitter<Token>();
 
   userClaims: Claims | null = null;
+  accountClaims: Claims | null = null;
 
   selectedUser : User | null = null;
   availableDomains  : Domain[] | null= [];
 
+  outputSelectedDomain = new EventEmitter<Domain>();
+
   private authenticationUrl = 'http://localhost:8080/api/authentication';
   private authorizationUrl = 'http://localhost:8080/api/authorization';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private accountsService : AccountService) {
 
   }
 
-  postAuthorization(jwt: Token, domainId: string): Observable<Token> {
+  postAuthorization(domainId: string){
 
-    const headers = { 'Authorization': 'Bearer '+jwt.token };
+    console.log("authService post authorization "+ domainId + "  with usertoken "+ this.getUserToken()?.token);
+    const headers = { 'Authorization': 'Bearer '+this.getUserToken()?.token };
     const body = null;// { title: 'Angular POST Request Example' };
     const params = { 'domainId' : domainId};
-    return this.http.post<Token>(this.authorizationUrl, body, { headers, params});
+
+    this.http.post<Token>(this.authorizationUrl, body, { headers, params}).subscribe(accountToken => {
+      this.accountToken = accountToken;
+      this.accountClaims = this.decode(accountToken);
+
+      this.outputSelectedDomain.emit(this.accountClaims.domain);
+
+      this.accountsService.getAccount(this.accountToken).subscribe(account => {
+        this.selectedAccount = account;
+        
+      });
+    });
   }
 
-/*   postAuthentication(paramUsername: string, paramPassword: string): Observable<Token> {
-    return this.http.post<Token>(this.authenticationUrl, { username: 'root@domain.com', password: paramPassword }, {
-//      return this.http.post<Token>(this.authenticationUrl, { username: paramUsername, password: paramPassword }, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    });
-  } */
   postAuthentication(paramUsername: string, paramPassword: string) {
      return this.http.post<Token>(this.authenticationUrl, { username: "root@domain.com", password: paramPassword }, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -60,6 +70,18 @@ export class AuthService {
     
   }
 
+  getUserToken() : Token | null {
+    return this.userToken;
+  }
+
+  getAccountToken() : Token | null {
+    return this.accountToken;
+  }
+
+  getAccount(): Account | null {
+    return this.selectedAccount;
+  }
+
   getUserClaims() : Claims | null {
     return this.userClaims;
   }
@@ -72,5 +94,13 @@ export class AuthService {
     let parts: string[] = token.token.split('.');
     let claims = JSON.parse(Buffer.from(parts[1], 'base64').toString());
     return claims;
+  }
+
+  setAccountToken(accountToken : Token | null) {
+    this.accountToken = accountToken;
+  }
+
+  isUserLogged() : boolean {
+    return this.selectedUser!=null;
   }
 }

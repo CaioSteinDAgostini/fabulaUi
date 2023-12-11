@@ -26,7 +26,7 @@ export class GalleryEntryComponent implements OnInit {
 
   private getThumbnailData() {
     if (this.inputSelectedAccountToken && this.inputThumbnail) {
-      this.galleryService.getThumbnailData(this.inputSelectedAccountToken, this.inputThumbnail.id).subscribe(response => {
+      this.galleryService.getThumbnailData(this.inputThumbnail.id).subscribe(response => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           this.thumbnailImageUrl = reader.result;

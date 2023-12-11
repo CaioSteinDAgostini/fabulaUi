@@ -31,7 +31,7 @@ export class GalleryComponent implements OnInit {
 
   getAllThumbnails() {
     if(this.selectedAccountToken ){
-      this.galleryService.getAllThumbnails(this.selectedAccountToken).subscribe(thumbnails => {
+      this.galleryService.getAllThumbnails().subscribe(thumbnails => {
         this.imageThumbnails = thumbnails;
       });
     }

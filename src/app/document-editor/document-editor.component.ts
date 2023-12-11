@@ -47,7 +47,7 @@ export class DocumentEditorComponent implements OnInit {
         console.log("title image " + this.article.titleImage);
         this.article = { id: this.article.id, domain: this.article.domain, title: this.article.title, contents: this.editedContent, subtitle: this.article.subtitle, titleImage: null, thumbnailImageUrl: null };
 
-        this.documentsService.saveDocument(this.inputSelectedAccountToken, this.article).subscribe(Response => {
+        this.documentsService.saveDocument( this.article).subscribe(Response => {
           console.log("after documentService save");
 
         });
@@ -78,7 +78,7 @@ export class DocumentEditorComponent implements OnInit {
   ngOnInit(): void {
     if (this.inputSelectedAccountToken) {
       if (this.article) {
-        this.documentsService.loadDocument(this.inputSelectedAccountToken, this.article?.id).subscribe(document => {
+        this.documentsService.loadDocument(this.article?.id).subscribe(document => {
           this.editedContent = document.contents;
           this.article = document;
         }

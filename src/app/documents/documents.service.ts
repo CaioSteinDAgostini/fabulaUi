@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Token } from 'src/token';
 import { Document } from './document';
 import { FilesService } from '../files/files.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,33 +14,33 @@ export class DocumentsService {
   
   private url = 'http://localhost:8080/api/documents';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService : AuthService) {
 
   }
 
   
-  listDocuments(accountJwt: Token): Observable<Array<Document>> {
+  listDocuments(): Observable<Array<Document>> {
     console.log('documents service listDocuments')
-    const headers = { 'Authorization': 'Bearer '+accountJwt.token };
+    const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     return this.http.get<Array<Document>>(this.url,  { headers});
   }
 
-  createNewDocument(accountJwt: Token): Observable<Document> {
-    const headers = { 'Authorization': 'Bearer '+accountJwt.token };
+  createNewDocument(): Observable<Document> {
+    const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     let document = {};
     return this.http.post<Document>(this.url, document, { headers});
   }
 
-  saveDocument(accountJwt: Token, document :Document): Observable<Document>{
-    const headers = { 'Authorization': 'Bearer '+accountJwt.token };
+  saveDocument(document :Document): Observable<Document>{
+    const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     console.log("document content is "+document.contents);
     return this.http.put<Document>(this.url, document, {headers});
     // return this.http.put<Document>(this.url, document, {headers});
   }
 
-  loadDocument(accountJwt: Token, documentId : string): Observable<Document>{
+  loadDocument(documentId : string): Observable<Document>{
     console.log("document service this.loadDocument "+documentId);
-    const headers = { 'Authorization': 'Bearer '+accountJwt.token };
+    const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     return this.http.get<Document>(this.url+"/"+documentId,  { headers});
   }
 

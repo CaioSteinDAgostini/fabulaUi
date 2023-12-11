@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChange
 import { DocumentsService } from './documents.service';
 import { Document } from './document';
 import { Account } from '../accounts/account';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-documents',
@@ -11,10 +12,13 @@ import { Account } from '../accounts/account';
 })
 export class DocumentsComponent implements OnInit {
 
-  constructor(private documentsService: DocumentsService) { }
+  constructor(private documentsService: DocumentsService, private authService: AuthService) { 
+    authService.outputSelectedDomain.subscribe((selectedDomain) => {
+      this.listArticles();
+    })
+  }
 
 
-  @Input() selectedAccountToken : Token | null = null;
   domainArticles : Document[] = [];
   selectedArticle : Document | null = null;
   selectedArticleTitleImageUrl : string | ArrayBuffer | null = null;
@@ -59,20 +63,19 @@ export class DocumentsComponent implements OnInit {
   }
 
   listArticles() {
-    if(this.selectedAccountToken ){
-      this.documentsService.listDocuments(this.selectedAccountToken).subscribe(articles => {
+      this.documentsService.listDocuments().subscribe(articles => {
         console.log("documents "+JSON.stringify(articles));
         this.domainArticles = articles;
       });
-    }
+    
   }
 
   createNewArticle(){
-    if(this.selectedAccountToken ){
-      this.documentsService.listDocuments(this.selectedAccountToken).subscribe(articles => {
+
+      this.documentsService.listDocuments().subscribe(articles => {
         this.domainArticles = articles;
       });
-    }
+    
   }
 
   ngOnInit(): void {

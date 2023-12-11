@@ -1,6 +1,5 @@
-<app-login (outputUserToken)="setUserToken($event)" (outputSelectedAccount)="setSelectedAccount($event)"
-  (outputAccountToken)="setSelectedAccountToken($event)"></app-login>
-<app-documents *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken" [selectedAccount]="selectedAccount" ></app-documents>
+<app-login></app-login>
+<app-documents></app-documents>
 <app-gallery *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken" >
 </app-gallery>
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Token } from 'src/token';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +11,16 @@ export class FilesService {
 
   private url = 'http://localhost:8080/api/files/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService : AuthService) {
 
   }
 
-  getFileData(accountJwt: Token, fileId : String): Observable<any> {
+  getFileData(fileId : String): Observable<any> {
     console.log('documents service listDocuments')
     var options = {
       headers: new HttpHeaders({
          'Accept':'image/image/png', //or 'Accept':'application/pdf' .. etc
-         'Authorization': 'Bearer '+accountJwt.token
+         'Authorization': 'Bearer '+this.authService.getAccountToken()?.token
       }),
       'responseType': 'blob' as 'json'
    }

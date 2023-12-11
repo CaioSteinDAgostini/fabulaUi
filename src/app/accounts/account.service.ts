@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Token } from 'src/token';
 import { Account } from './account';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,9 @@ export class AccountService {
   constructor(private http: HttpClient) {
 
   }
-  getAccount(accountJwt: Token): Observable<Account> {
+  getAccount(accountToken : Token): Observable<Account> {
 
-    const headers = { 'Authorization': 'Bearer '+accountJwt.token };
+    const headers = { 'Authorization': 'Bearer '+accountToken.token };
     return this.http.get<Account>(this.accountUrl+"/accounts",  { headers});
   }
 }

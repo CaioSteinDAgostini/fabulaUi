@@ -20,19 +20,16 @@ export class LoginComponent {
 
     this.authService.outputUserToken.subscribe(
       (userToken: Token) => {
-        this._userToken = userToken;
-        this.userClaims = this.authService.getUserClaims();
-        this._availableDomains = this.authService.getAvailableDomains();
+        this.authService.getAvailableDomains();
         console.log("AuthService returned ");
         
-        console.log("available domains = "+this._availableDomains);
-        if (this._availableDomains) {
-          let rootDomain = this._availableDomains.find((element) => element.root);
+        let availableDomains = authService.getAvailableDomains();
+        if (availableDomains) {
+          let rootDomain = availableDomains.find((element) => element.root);
           if (rootDomain?.id) {
             this.connectToDomain(rootDomain.id);
           }
         }
-        this.outputUserToken.emit(this._userToken);
       }
     );
   }
@@ -41,19 +38,7 @@ export class LoginComponent {
   usernamePlaceholder: String | null = "root@domain.com";
   pwdPlaceholder: String | null = "pwd";
 
-  _userToken: Token | null = null;
-  @Output() outputUserToken = new EventEmitter<Token>();
-  userClaims: Claims | null = null;
-
-  _selectedAccountToken: Token | null = null;
-  @Output() outputAccountToken = new EventEmitter<Token>();
-  accountClaims: Claims | null = null;
-  _selectedAccount: Account | null = null;
-  @Output() outputSelectedAccount = new EventEmitter<Account>();
-
-  _availableDomains: Domain[] | null = []
-  @Output() outputSelectedDomain = new EventEmitter<Domain>();
-
+ 
   submitted = false;
 
   _switchDomains: Boolean = false;
@@ -72,42 +57,15 @@ export class LoginComponent {
     }
   }
 
-  /* onSubmit() {
-    console.log(this.loginForm.controls['username'].value + ":" + this.loginForm.controls['password'].value)
-    let username = this.loginForm.controls['username'].value;
-    let password = this.loginForm.controls['password'].value;
-    if (username && password) {
-      this.authService.postAuthentication(username, password).subscribe(token => {
-        this._userToken = token;
-        this.outputUserToken.emit(token);
-        this.userClaims = this.authService.decode(this._userToken);
-        this._availableDomains = this.userClaims.domains;
-
-        let rootDomain = this._availableDomains.find((element) => element.root);
-        if (rootDomain?.id) {
-          this.connectToDomain(rootDomain.id);
-        }
-      });
-      this.submitted = true;
-    }
-  } */
-
-  isSame(account: Account, domain: Domain): boolean {
-    return account.domain.id == domain.id;
+  isSameDomain(domain: Domain): boolean {
+    return this.authService.getAccount()?.domain.id == domain.id;
+/*     return account.domain.id == domain.id; */
   }
 
   connectToDomain(domainId: string): void {
-    if (this._userToken && this._userToken.token) {
-      this.authService.postAuthorization(this._userToken, domainId).subscribe(accountToken => {
-        this._selectedAccountToken = accountToken;
-        this.accountClaims = this.authService.decode(accountToken);
-        this.outputAccountToken.emit(accountToken);
-        this.outputSelectedDomain.emit(this.accountClaims.domain);
-        this.accountsService.getAccount(this._selectedAccountToken).subscribe(account => {
-          this._selectedAccount = account;
-          this.outputSelectedAccount.emit(account);
-        });
-      });
+    if (this.authService.getUserToken()) {
+      console.log("login component trying to connect to domain "+ domainId);
+      this.authService.postAuthorization(domainId);
 
     }
     else {
@@ -118,6 +76,18 @@ export class LoginComponent {
 
   switchDomains() {
     this._switchDomains = !this._switchDomains;
+  }
+
+  getAvailableDomains() : Domain[] | null {
+    return this.authService.getAvailableDomains();
+  }
+
+  isUserLogged() : boolean {
+    return this.authService.isUserLogged();
+  }
+
+  getUserClaims() : Claims | null {
+    return this.authService.getUserClaims();
   }
 
 }

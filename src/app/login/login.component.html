@@ -1,4 +1,4 @@
-<div class="loginCard" *ngIf="!_userToken">
+<div class="loginCard" *ngIf="!isUserLogged()">
 
     <h2>Login</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -23,34 +23,35 @@
 
 
         <button class="button" type="submit">
-            <span *ngIf="!_userToken">Connect</span>
+            <span>Connect</span>
         </button>
     </form>
 </div>
 
-selected account = {{_selectedAccount}}
+
+<div *ngIf="isUserLogged()" class="loginCard">
 
 
-<div *ngIf="_userToken && userClaims " class="loginCard">
-
-   
-        <!-- <div> -->
-        <p> Welcome, {{userClaims?.sub}} ! </p>
-        <p> You can already see the public content, but you can log into the following domains you're subscribed to see
-            even more contents!</p>
+    <!-- <div> -->
+    <p> Welcome, {{getUserClaims()?.sub}} ! </p>
+    <p> You can already see the public content, but you can log into the following domains you're subscribed to see
+        even more contents!</p>
 
 
-        <div *ngFor="let domain of _availableDomains">
-            <div class="domainCard">
-                <h3>{{domain.name}}</h3>
-                <span style="size: 3">{{domain.id}}</span>
-                <span *ngIf="_selectedAccount && isSame(_selectedAccount, domain)" style="color:green">YOU`RE CURRENTLY VIEWING IT</span>
-                <span *ngIf=domain.parent>parent: {{domain.parent.name}}</span>
-                <span *ngIf=domain.restricted>restricted</span>
-                <button  *ngIf="_selectedAccount && !isSame(_selectedAccount, domain)" class="button" type="button" (click)="connectToDomain(domain.id)">
-                    connect
-                </button>
-            </div>
+    <div *ngFor="let domain of getAvailableDomains()">
+        <div class="domainCard">
+            <h3>{{domain.name}}</h3>
+            <span style="size: 3">{{domain.id}}</span>
+            <span *ngIf="isSameDomain(domain)" style="color:green">YOU`RE CURRENTLY
+                VIEWING IT</span>
+            <span *ngIf=domain.parent>parent: {{domain.parent.name}}</span>
+            <span *ngIf=domain.restricted>restricted</span>
+            <!--                 <button   class="button" type="button" (click)="connectToDomain(domain.id)"> -->
+            <button *ngIf=" !isSameDomain( domain)" class="button" type="button"
+                (click)="connectToDomain(domain.id)">
+                connect
+            </button>
         </div>
-    
+    </div>
+
 </div>

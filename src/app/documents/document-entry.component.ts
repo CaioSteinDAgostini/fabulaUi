@@ -22,7 +22,6 @@ export class DocumentEntryComponent implements OnInit {
   markdown: string | undefined = undefined;
 
   @Input() inputEditorsDocument: Document | null = null;
-  @Input() inputSelectAccountToken: Token | null = null;
   _titleImageUrl: string | ArrayBuffer | null = 'none';
   _thumbnailImageUrl: string | ArrayBuffer | null = null;
 
@@ -39,8 +38,8 @@ export class DocumentEntryComponent implements OnInit {
   }
 
   private getTitleImageData() {
-    if (this.inputSelectAccountToken && this.inputEditorsDocument?.titleImage) {
-      this.fileService.getFileData(this.inputSelectAccountToken, this.inputEditorsDocument?.titleImage).subscribe(response => {
+    if (this.inputEditorsDocument?.titleImage) {
+      this.fileService.getFileData(this.inputEditorsDocument?.titleImage).subscribe(response => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           this._titleImageUrl = 'url('+reader.result+')';
@@ -54,9 +53,9 @@ export class DocumentEntryComponent implements OnInit {
   }
 
   switchEditor() {
-    if (this.inputSelectAccountToken && this.inputEditorsDocument) {
+    if (this.inputEditorsDocument) {
       if(this.inputEditorsDocument?.titleImage){
-      this.galleryService.getThumbnailData(this.inputSelectAccountToken, this.inputEditorsDocument?.titleImage).subscribe(response => {
+      this.galleryService.getThumbnailData(this.inputEditorsDocument?.titleImage).subscribe(response => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           this._thumbnailImageUrl = reader.result;
