@@ -62,6 +62,6 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ```bash
 docker build --tag=fabula-ui:latest .
-docker run -p 8889:80 fabula-ui:latest
+docker run -p 8888:80 fabula-ui:latest
 
 ``
