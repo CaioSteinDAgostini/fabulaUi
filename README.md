@@ -24,6 +24,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ![login](./login1.png)
 The users will have been defined on the Starter class on the Fabula project (as it is now, the password is not verified since it is just for demo purposes)
 
+The user's info is stored on the browser's localstorage and used to skip the login form the next time. It is not verifying the token expiration date, but the token DOES HAVE and expiration date and in a real scenario it could be used to expire the saved login.
+
 ### domain selection
 ![domains](./login-domain.png)
 Each instance of Fabula starts with a root domain, from which it is possible to create other domains. Documents are associated to domains, if you're not on the domain, you can't see them.
