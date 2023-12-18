@@ -1,3 +1,8 @@
+<div class="loginCard" *ngIf="isUserLogged()">
+    <button (click)="logout()">LOGOUT / CHANGE USER</button>
+</div>
+
+
 <div class="loginCard" *ngIf="!isUserLogged()">
 
     <h2>Login</h2>

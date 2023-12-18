@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core'; ''
+import { Component, Output, EventEmitter, OnDestroy } from '@angular/core'; ''
 import { AuthService } from 'src/app/auth/auth.service';
 import { Token } from 'src/token';
 import { Buffer } from 'buffer';
@@ -7,6 +7,7 @@ import { Claims } from 'src/app/auth/claims';
 import { Domain } from 'src/app/domain/domain';
 import { Account } from 'src/app/accounts/account';
 import { AccountService } from 'src/app/accounts/account.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,11 +15,14 @@ import { AccountService } from 'src/app/accounts/account.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+
+
+  authSubscription : Subscription | null = null;
 
   constructor(private authService: AuthService, private accountsService: AccountService, private formBuilder: FormBuilder) {
 
-    this.authService.outputUserToken.subscribe(
+    this.authSubscription = this.authService.outputUserToken.subscribe(
       (userToken: Token) => {
         this.authService.getAvailableDomains();
         let availableDomains = authService.getAvailableDomains();
@@ -82,8 +86,16 @@ export class LoginComponent {
     return this.authService.isUserLogged();
   }
 
+  logout(){
+    this.authService.logout();
+  }
+  
   getUserClaims() : Claims | null {
     return this.authService.getUserClaims();
+  }
+
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
   }
 
 }

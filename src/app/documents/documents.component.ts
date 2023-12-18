@@ -1,80 +1,93 @@
 import { Token } from 'src/token';
-import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { DocumentsService } from './documents.service';
 import { Document } from './document';
 import { Account } from '../accounts/account';
 import { AuthService } from '../auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent implements OnInit, OnDestroy {
 
-  constructor(private documentsService: DocumentsService, private authService: AuthService) { 
-    authService.outputSelectedDomain.subscribe((selectedDomain) => {
-      this.listArticles();
+  authSubscription: Subscription | null = null;
+
+  constructor(private documentsService: DocumentsService, private authService: AuthService) {
+    this.authSubscription = authService.outputSelectedDomain.subscribe((selectedDomain) => {
+      if (!selectedDomain) {
+        this.isEditorOpen = false;
+        this.domainArticles = [];
+      }
+      else {
+        this.listArticles();
+      }
     })
   }
 
 
-  domainArticles : Document[] = [];
-  selectedArticle : Document | null = null;
-  selectedArticleTitleImageUrl : string | ArrayBuffer | null = null;
+  domainArticles: Document[] = [];
+  selectedArticle: Document | null = null;
+  selectedArticleTitleImageUrl: string | ArrayBuffer | null = null;
 
-  isEditorOpen : boolean = false;
-  
-  _selectedAccount : Account | null  = null;
+  isEditorOpen: boolean = false;
+
+  _selectedAccount: Account | null = null;
 
   @Output() editorOpenEmitter = new EventEmitter<Boolean>();
 
 
-  get selectedAccount() : Account | null{
+  get selectedAccount(): Account | null {
     return this._selectedAccount;
   }
 
-  @Input() 
-  set selectedAccount(account : Account | null){
+  @Input()
+  set selectedAccount(account: Account | null) {
     this.listArticles();
   }
 
-  setArticleBeingEdited(article : Document){
+  setArticleBeingEdited(article: Document) {
     this.selectedArticle = article;
     this.isEditorOpen = true;
   }
-  
-  openEditor(){
+
+  openEditor() {
     this.isEditorOpen = true;
     this.editorOpenEmitter.emit(this.isEditorOpen)
   }
 
-  closeEditor(condition : Boolean){
-    if(condition){
+  closeEditor(condition: Boolean) {
+    if (condition) {
       console.log()
-    this.isEditorOpen = false;
-    this.editorOpenEmitter.emit(this.isEditorOpen);
+      this.isEditorOpen = false;
+      this.editorOpenEmitter.emit(this.isEditorOpen);
     }
   }
 
   listArticles() {
-      this.documentsService.listDocuments().subscribe(articles => {
-        this.domainArticles = articles;
-      });
-    
+    this.documentsService.listDocuments().subscribe(articles => {
+      this.domainArticles = articles;
+    });
+
   }
 
-  createNewArticle(){
+  createNewArticle() {
 
-      this.documentsService.listDocuments().subscribe(articles => {
-        this.domainArticles = articles;
-      });
-    
+    this.documentsService.listDocuments().subscribe(articles => {
+      this.domainArticles = articles;
+    });
+
   }
 
   ngOnInit(): void {
 
     /* this.listArticles(); */
+  }
+
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
   }
 
 }
