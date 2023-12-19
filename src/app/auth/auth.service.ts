@@ -56,8 +56,7 @@ export class AuthService {
 
   postAuthorization(domainId: string) {
 
-    console.log('authservice post authorization');
-
+    
     const headers = { 'Authorization': 'Bearer ' + this.getUserToken()?.token };
     const body = null;// { title: 'Angular POST Request Example' };
     const params = { 'domainId': domainId };
@@ -69,7 +68,6 @@ export class AuthService {
 
 
       this.outputSelectedDomain.emit(this.accountClaims.domain);
-      console.log('authservice emmited selected domain '+ this.accountClaims.domain.name);
       this.accountsService.getAccount(this.accountToken).subscribe(account => {
         this.selectedAccount = account;
         localStorage.setItem('selectedAccount', JSON.stringify(account))

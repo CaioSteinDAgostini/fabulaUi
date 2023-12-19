@@ -1,7 +1,3 @@
-<div class="loginCard" *ngIf="isUserLogged()">
-    <button (click)="logout()">LOGOUT / CHANGE USER</button>
-</div>
-
 
 <div class="loginCard" *ngIf="!isUserLogged()">
 
@@ -33,30 +29,4 @@
     </form>
 </div>
 
-
-<!-- <div *ngIf="isUserLogged()" class="loginCard">
-
-
-   
-    <p> Welcome, {{getUserClaims()?.sub}} ! </p>
-    <p> You can already see the public content, but you can log into the following domains you're subscribed to see
-        even more contents!</p>
-
-
-    <div *ngFor="let domain of getAvailableDomains()">
-        <div class="domainCard">
-            <h3>{{domain.name}}</h3>
-            <span style="size: 3">{{domain.id}}</span>
-            <span *ngIf="isSameDomain(domain)" style="color:green">YOU`RE CURRENTLY
-                VIEWING IT</span>
-            <span *ngIf=domain.parent>parent: {{domain.parent.name}}</span>
-            <span *ngIf=domain.restricted>restricted</span>
-            <button *ngIf=" !isSameDomain( domain)" class="button" type="button"
-                (click)="connectToDomain(domain.id)">
-                connect
-            </button>
-        </div>
-    </div>
-
-</div> -->
 

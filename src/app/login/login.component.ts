@@ -22,19 +22,6 @@ export class LoginComponent implements OnDestroy, OnInit {
   authSubscription : Subscription | null = null;
 
   constructor(private router:Router,  private authService: AuthService, private accountsService: AccountService, private formBuilder: FormBuilder) {
-
-    /* this.authSubscription = this.authService.outputUserToken.subscribe(
-      (userToken: Token) => {
-        this.authService.getAvailableDomains();
-        let availableDomains = authService.getAvailableDomains();
-        if (availableDomains) {
-          let rootDomain = availableDomains.find((element) => element.root);
-          if (rootDomain?.id) {
-            this.connectToDomain(rootDomain.id);
-          }
-        }
-      }
-    ); */
   }
 
 
@@ -52,7 +39,6 @@ export class LoginComponent implements OnDestroy, OnInit {
   });
 
   onSubmit() {
-    console.log(this.loginForm.controls['username'].value + ":" + this.loginForm.controls['password'].value)
     let username = this.loginForm.controls['username'].value;
     let password = this.loginForm.controls['password'].value;
     if (username && password) {

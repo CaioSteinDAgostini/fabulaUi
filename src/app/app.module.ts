@@ -19,6 +19,7 @@ import { FilesComponent } from './files/files.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { GalleryEntryComponent } from './gallery/gallery-entry.component';
 import { DocumentEditorComponent } from './document-editor/document-editor.component';
+import { HeaderComponent } from './header/header.component';
 
 
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
     FilesComponent,
     GalleryComponent,
     GalleryEntryComponent,
-    DocumentEditorComponent
+    DocumentEditorComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

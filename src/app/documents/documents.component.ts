@@ -11,20 +11,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent implements OnInit, OnDestroy {
+export class DocumentsComponent implements OnInit {
 
-  authSubscription: Subscription | null = null;
+  
 
   constructor(private documentsService: DocumentsService, private authService: AuthService) {
-   /*  this.authSubscription = this.authService.outputSelectedDomain.subscribe((selectedDomain) => {
-      if (!selectedDomain) {
-        this.isEditorOpen = false;
-        this.domainArticles = [];
-      }
-      else {
-        this.listArticles();
-      }
-    }) */
   }
 
 
@@ -65,8 +56,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.documentsService.listDocuments().subscribe(articles => {
       this.domainArticles = articles;
     });
-    console.log('dicuments component end listArticles()');
-
   }
 
   createNewArticle() {
@@ -78,11 +67,21 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.listArticles();
+    if(this.authService.selectedAccount?.domain){
+      this.listArticles();
+    }
+    this.authService.outputSelectedDomain.subscribe((selectedDomain) => {
+      if (!selectedDomain) {
+        this.isEditorOpen = false;
+        this.domainArticles = [];
+      }
+      else{
+        this.listArticles();
+      }
+    }) 
+
   }
 
-  ngOnDestroy(): void {
-    this.authSubscription?.unsubscribe();
-  }
+
 
 }
