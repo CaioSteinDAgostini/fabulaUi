@@ -16,7 +16,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   authSubscription: Subscription | null = null;
 
   constructor(private documentsService: DocumentsService, private authService: AuthService) {
-    this.authSubscription = authService.outputSelectedDomain.subscribe((selectedDomain) => {
+   /*  this.authSubscription = this.authService.outputSelectedDomain.subscribe((selectedDomain) => {
       if (!selectedDomain) {
         this.isEditorOpen = false;
         this.domainArticles = [];
@@ -24,7 +24,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       else {
         this.listArticles();
       }
-    })
+    }) */
   }
 
 
@@ -41,11 +41,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   get selectedAccount(): Account | null {
     return this._selectedAccount;
-  }
-
-  @Input()
-  set selectedAccount(account: Account | null) {
-    this.listArticles();
   }
 
   setArticleBeingEdited(article: Document) {
@@ -70,6 +65,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.documentsService.listDocuments().subscribe(articles => {
       this.domainArticles = articles;
     });
+    console.log('dicuments component end listArticles()');
 
   }
 
@@ -82,8 +78,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    /* this.listArticles(); */
+    this.listArticles();
   }
 
   ngOnDestroy(): void {

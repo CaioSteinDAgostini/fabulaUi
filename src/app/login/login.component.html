@@ -34,10 +34,10 @@
 </div>
 
 
-<div *ngIf="isUserLogged()" class="loginCard">
+<!-- <div *ngIf="isUserLogged()" class="loginCard">
 
 
-    <!-- <div> -->
+   
     <p> Welcome, {{getUserClaims()?.sub}} ! </p>
     <p> You can already see the public content, but you can log into the following domains you're subscribed to see
         even more contents!</p>
@@ -51,7 +51,6 @@
                 VIEWING IT</span>
             <span *ngIf=domain.parent>parent: {{domain.parent.name}}</span>
             <span *ngIf=domain.restricted>restricted</span>
-            <!--                 <button   class="button" type="button" (click)="connectToDomain(domain.id)"> -->
             <button *ngIf=" !isSameDomain( domain)" class="button" type="button"
                 (click)="connectToDomain(domain.id)">
                 connect
@@ -59,4 +58,5 @@
         </div>
     </div>
 
-</div>
+</div> -->
+

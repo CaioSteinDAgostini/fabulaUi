@@ -20,6 +20,7 @@ export class DocumentsService {
 
   
   listDocuments(): Observable<Array<Document>> {
+    console.log('document service ... account token from authservice '+this.authService.getAccountToken());
     const headers = { 'Authorization': 'Bearer '+this.authService.getAccountToken()?.token };
     return this.http.get<Array<Document>>(this.url,  { headers});
   }

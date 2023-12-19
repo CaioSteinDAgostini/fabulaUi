@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'documents', component: DocumentsComponent },
   { path: 'documentsEditor', component: DocumentEditorComponent },
+  { path: 'domains', component: DomainComponent},
 
 // { path: 'documents', redirectTo: '/login', pathMatch: 'full' },
 ];

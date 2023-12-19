@@ -31,10 +31,8 @@ export class AuthService {
   private authorizationUrl = 'http://localhost:8080/api/authorization';
 
   constructor(private http: HttpClient, private accountsService: AccountService) {
-    console.log('AUTH SERVICE CONSTRUCTOR')
     let userToken = localStorage.getItem('userToken');
     if (userToken) {
-      console.log("GOT USER TOKEN FROM LOCAL STORAGE");
       this.userToken = JSON.parse(userToken);
     }
     let userClaims = localStorage.getItem('userClaims');
@@ -58,6 +56,8 @@ export class AuthService {
 
   postAuthorization(domainId: string) {
 
+    console.log('authservice post authorization');
+
     const headers = { 'Authorization': 'Bearer ' + this.getUserToken()?.token };
     const body = null;// { title: 'Angular POST Request Example' };
     const params = { 'domainId': domainId };
@@ -69,7 +69,7 @@ export class AuthService {
 
 
       this.outputSelectedDomain.emit(this.accountClaims.domain);
-
+      console.log('authservice emmited selected domain '+ this.accountClaims.domain.name);
       this.accountsService.getAccount(this.accountToken).subscribe(account => {
         this.selectedAccount = account;
         localStorage.setItem('selectedAccount', JSON.stringify(account))

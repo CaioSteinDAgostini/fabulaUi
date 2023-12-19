@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnDestroy } from '@angular/core'; ''
+import { Component, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core'; ''
 import { AuthService } from 'src/app/auth/auth.service';
 import { Token } from 'src/token';
 import { Buffer } from 'buffer';
@@ -8,6 +8,7 @@ import { Domain } from 'src/app/domain/domain';
 import { Account } from 'src/app/accounts/account';
 import { AccountService } from 'src/app/accounts/account.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,14 +16,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnDestroy, OnInit {
 
 
   authSubscription : Subscription | null = null;
 
-  constructor(private authService: AuthService, private accountsService: AccountService, private formBuilder: FormBuilder) {
+  constructor(private router:Router,  private authService: AuthService, private accountsService: AccountService, private formBuilder: FormBuilder) {
 
-    this.authSubscription = this.authService.outputUserToken.subscribe(
+    /* this.authSubscription = this.authService.outputUserToken.subscribe(
       (userToken: Token) => {
         this.authService.getAvailableDomains();
         let availableDomains = authService.getAvailableDomains();
@@ -33,7 +34,7 @@ export class LoginComponent implements OnDestroy {
           }
         }
       }
-    );
+    ); */
   }
 
 
@@ -89,13 +90,31 @@ export class LoginComponent implements OnDestroy {
   logout(){
     this.authService.logout();
   }
-  
+
   getUserClaims() : Claims | null {
     return this.authService.getUserClaims();
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.authSubscription = this.authService.outputUserToken.subscribe(
+      (userToken: Token) => {
+        this.authService.getAvailableDomains();
+        let availableDomains = this.authService.getAvailableDomains();
+        if (availableDomains) {
+          let rootDomain = availableDomains.find((element) => element.root);
+          if (rootDomain?.id) {
+            this.connectToDomain(rootDomain.id);
+          }
+        }
+        if(this.authService.isUserLogged()){
+          this.router.navigate(['/documents']);
+        }
+      }
+    );
   }
 
 }

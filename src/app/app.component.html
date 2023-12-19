@@ -1,6 +1,17 @@
+<div class="header" id="myHeader">
+
+  <a href="#" class="brand">BRAND</a>
+  <nav class="nav"> </nav>
+  <a> <button routerLink='/domains' class="button">DOMAINS</button></a>
+  <a> <button routerLink='/documents' class="button">DOCUMENTS</button></a>
+  <a><button routerLink='/' class="button">OTHER MENU</button></a>
+  <a><button routerLink='/login' class="button">login/logoff</button></a>
+
+</div>
+
 <app-login></app-login>
-<app-documents></app-documents>
-<app-gallery *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken" >
+<!-- <app-documents></app-documents> -->
+<app-gallery *ngIf="selectedAccountToken" [selectedAccountToken]="selectedAccountToken">
 </app-gallery>
 
 

@@ -3,7 +3,7 @@
     <app-document-editor *ngIf="isEditorOpen" [article]="selectedArticle" (outputCloseEditor)="closeEditor($event)">
 </app-document-editor>
 
-    <div *ngIf="!isEditorOpen">
+   <!--  <div *ngIf="!isEditorOpen"> -->
         <p>Documents from the selected domain</p>
         <div *ngFor="let article of domainArticles">
             <app-document-entry [inputEditorsDocument]="article" (outputDocumentEditorForDocument)="setArticleBeingEdited($event)">
@@ -11,7 +11,7 @@
             </app-document-entry>
 
         </div>
-    </div>
+  <!--   </div> -->
 
 
 </div>
